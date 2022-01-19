@@ -4,15 +4,21 @@
   <meta charset="utf-8">
   
   
-  <title>Howard&#39;s Note</title>
+  <title>[on-going]揭開容器神秘面紗– part I: Kernel Space | Howard&#39;s Note</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Howard&#39;s Note">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="這是篇針對CNCF容器介紹文章的簡略翻譯文章出處 Part I: Kernel Space這篇文章範圍為Linux Kernel主題, 會提供你容器需要的背景知識. 會從UNIX, Linux的歷史出發, 談及相關的容器技術如chroot, namespace與cgroups. Introduction談到容器時大部分的人都會想到大鯨魚或是籃底白舵但容器到底是什麼, Docker官方說明解釋容器是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[on-going]揭開容器神秘面紗– part I: Kernel Space">
+<meta property="og:url" content="http://example.com/2022/01/19/Demystifying-containers-%E2%80%93-part-I-Kernel-Space/index.html">
 <meta property="og:site_name" content="Howard&#39;s Note">
+<meta property="og:description" content="這是篇針對CNCF容器介紹文章的簡略翻譯文章出處 Part I: Kernel Space這篇文章範圍為Linux Kernel主題, 會提供你容器需要的背景知識. 會從UNIX, Linux的歷史出發, 談及相關的容器技術如chroot, namespace與cgroups. Introduction談到容器時大部分的人都會想到大鯨魚或是籃底白舵但容器到底是什麼, Docker官方說明解釋容器是">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/ujtK6bL.png">
+<meta property="article:published_time" content="2022-01-19T12:52:47.000Z">
+<meta property="article:modified_time" content="2022-01-19T18:23:56.881Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/ujtK6bL.png">
   
     <link rel="alternate" href="/atom.xml" title="Howard's Note" type="application/atom+xml">
   
@@ -69,9 +75,7 @@
 </header>
 
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-Demystifying-containers-–-part-I-Kernel-Space" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+        <section id="main"><article id="post-Demystifying-containers-–-part-I-Kernel-Space" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/01/19/Demystifying-containers-%E2%80%93-part-I-Kernel-Space/" class="article-date">
   <time class="dt-published" datetime="2022-01-19T12:52:47.000Z" itemprop="datePublished">2022-01-19</time>
@@ -84,8 +88,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/01/19/Demystifying-containers-%E2%80%93-part-I-Kernel-Space/">[on-going]揭開容器神秘面紗– part I: Kernel Space</a>
+    <h1 class="p-name article-title" itemprop="headline name">
+      [on-going]揭開容器神秘面紗– part I: Kernel Space
     </h1>
   
 
@@ -118,57 +122,19 @@
     </footer>
   </div>
   
-</article>
-
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-Hello-World" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/01/18/Hello-World/" class="article-date">
-  <time class="dt-published" datetime="2022-01-17T17:12:46.485Z" itemprop="datePublished">2022-01-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/01/18/Hello-World/">Hello World!! 2021/01/18</a>
-    </h1>
+    <a href="/2022/01/18/Hello-World/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World!! 2021/01/18</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>發現自己真的需要一個紀錄survey技術的Blog<br>人老了真的記性會很差勁<br>這是寫部落格主要的原因<br>目前涉獵真的蠻廣的<br>結果就是樣樣不精<br>預期以後的主題會包含</p>
-<ul>
-<li>Cloud Computing</li>
-<li>Cyber Security</li>
-<li>Linux</li>
-<li>K8S</li>
-<li>3D Printing</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/18/Hello-World/" data-id="ckylvoknf00012zmdebdmbrwc" data-title="Hello World!! 2021/01/18" class="article-share-link">Share</a>
-      
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-
-  
 
 
 </section>
