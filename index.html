@@ -102,16 +102,35 @@
 <li>Okay: 必須要isolated.</li>
 <li>Not so clearly: 會有常用功能.<br><img src="https://i.imgur.com/ujtK6bL.png" alt="container feature"><br>單論任一個需求都會造成混淆, 先從歷史說起</li>
 </ol>
-<h2 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h2><p>多數的UNIX作業系統都有機會更改root directory of current running process 及其child process. chroot最早出現在UNIX 7 (released 1979), Kerkeley Software Distribution(BSD). 現在的Linux可以用 <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/chroot.2.html">chroot(2)</a>當成system call(a kernel API function call). chroot亦被認為 jail, 因為1991年有人將chroot當成honeypot去監測駭客, 所以chroot實際上比Linux更老.<br>以下列例子來說</p>
+<h2 id="chroot"><a href="#chroot" class="headerlink" title="chroot"></a>chroot</h2><p>多數的UNIX作業系統都有機會更改root directory of current running process 及其child process. chroot最早出現在UNIX 7 (released 1979), Kerkeley Software Distribution(BSD). 現在的Linux可以用 <a target="_blank" rel="noopener" href="https://man7.org/linux/man-pages/man2/chroot.2.html">chroot(2)</a>當成system call(a kernel API function call). chroot亦被認為 jail, 因為1991年有人將chroot當成honeypot去監測駭客, 所以chroot實際上比Linux更老.<br>以下列例子來說<br>我們先將bash, ls與期相關的dependency 複製到$HOME/tmp目錄下, 再change root成$HOME/tmp, 執行pwd, 顯示在根目錄, 再執行ls會看到$HOME/tmp下的檔案, 看起來像是在一個新的Linux環境.</p>
 <ul>
-<li>chroot example  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ j=<span class="variable">$HOME</span>/tmp/jail</span><br><span class="line">$ mkdir -p <span class="variable">$j</span></span><br><span class="line">$ mkdir -p <span class="variable">$j</span>/&#123;bin, lib64&#125;</span><br><span class="line">$ cp /bin/bash <span class="variable">$j</span>/bin</span><br><span class="line">$ sudo chroot <span class="variable">$j</span> /bin/basj</span><br><span class="line">$ ldd /bin/bash | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i dirname &#123;&#125; | xargs -n1 -i mkdir -p <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ ldd /bin/bash | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i cp &#123;&#125; <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ ldd /bin/ls | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i dirname &#123;&#125; | xargs -n1 -i mkdir -p <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ ldd /bin/ls | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i cp &#123;&#125; <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ sudo chroot <span class="variable">$j</span> /bin/bash</span><br><span class="line">$ ls /</span><br><span class="line">$ ls /etc</span><br><span class="line">$ <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
-我們創造了一個新的根目錄給ls, 會發現他無法碰到原來的/etc, 但凡原則必有例外</li>
+<li><p>chroot example</p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ j=<span class="variable">$HOME</span>/jail</span><br><span class="line">$ mkdir -p <span class="variable">$j</span></span><br><span class="line">$ mkdir -p <span class="variable">$j</span>/&#123;bin, lib64&#125;</span><br><span class="line">$ cp /bin/bash <span class="variable">$j</span>/bin</span><br><span class="line">$ sudo chroot <span class="variable">$j</span> /bin/bash</span><br><span class="line">$ ldd /bin/bash | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i dirname &#123;&#125; | xargs -n1 -i mkdir -p <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ ldd /bin/bash | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i cp &#123;&#125; <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ ldd /bin/ls | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i dirname &#123;&#125; | xargs -n1 -i mkdir -p <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ ldd /bin/ls | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i cp &#123;&#125; <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ ldd /bin/<span class="built_in">pwd</span> | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i dirname &#123;&#125; | xargs -n1 -i mkdir -p <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ ldd /bin/<span class="built_in">pwd</span> | grep / | rev | cut -d <span class="string">&quot; &quot;</span> -f 2 | rev  | xargs -n1 -i cp &#123;&#125; <span class="variable">$j</span>/&#123;&#125;</span><br><span class="line">$ sudo chroot <span class="variable">$j</span> /bin/bash</span><br><span class="line">$ <span class="built_in">pwd</span></span><br><span class="line">$ ls /</span><br><span class="line">$ <span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+<p>  <img src="https://i.imgur.com/m1wFlqs.png" alt="jail"><br>  乍看之下chroot有點像container概念, 但還是有些許不同, 當再作syscall時, 當前目錄還是不變, 而相對路徑還是可以指到外部目錄. 另外, 有CAP_SYS_VHROOT 的privilegedd processes, 可以執行chroot, 可以輕易的逃脫.</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> sys/stat.h </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> </span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span>&#123;</span><br><span class="line">    mkdir(<span class="string">&quot;.out&quot;</span>, <span class="number">0755</span>); </span><br><span class="line">    chroot(<span class="string">&quot;.out&quot;</span>); </span><br><span class="line">    chdir(<span class="string">&quot;../../../../../&quot;</span>);</span><br><span class="line">    chroot(<span class="string">&quot;.&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> execl(<span class="string">&quot;/bin/bash&quot;</span>, <span class="string">&quot;-i&quot;</span>, <span class="literal">NULL</span>);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="Linux-namespaces"><a href="#Linux-namespaces" class="headerlink" title="Linux namespaces"></a>Linux namespaces</h2><p>namespaces 是2002年起的Linux 2.4.19 後的kernel功能, 目標是將特定的Linux資源包裝成抽象層. 這會讓namespaces裡的processes更像單獨存在的個體. 目前的namespaces種類有</p>
+<ol>
+<li>mnt</li>
+<li>pid</li>
+<li>net</li>
+<li>ipc</li>
+<li>uts</li>
+<li>user</li>
+<li>cgroup</li>
+</ol>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>namespace在Linux kernel有幾個重要的system call</p>
+<ul>
+<li>clone: 建立child process, 與fork不同的是, </li>
+<li>unshare</li>
+<li>setns</li>
+<li>proc</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/19/Demystifying-containers-%E2%80%93-part-I-Kernel-Space/" data-id="ckylvtdar00008mmd1f9r8trw" data-title="[on-going]揭開容器神秘面紗– part I: Kernel Space" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/01/19/Demystifying-containers-%E2%80%93-part-I-Kernel-Space/" data-id="ckyn7gi1f0001ypmdbx8cdshi" data-title="[on-going]揭開容器神秘面紗– part I: Kernel Space" class="article-share-link">Share</a>
       
       
       
@@ -157,7 +176,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/01/18/Hello-World/" data-id="ckylvtdaw00018mmdbr92cmli" data-title="Hello World!! 2021/01/18" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/01/18/Hello-World/" data-id="ckyn7gi1a0000ypmdcx8adxzy" data-title="Hello World!! 2021/01/18" class="article-share-link">Share</a>
       
       
       
